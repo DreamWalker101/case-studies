@@ -12,6 +12,12 @@ A living record of every project built — equal parts portfolio and memory.
 |---------|-------|-------|--------|
 | [Claude Knowledge Pipeline](./claude-knowledge-pipeline/) | Apr 2026 | yt-dlp · Whisper · Ollama · ChromaDB · Claude Code CLI · iOS Scriptable | ✅ Live |
 
+## Research
+
+| Topic | Date | File |
+|-------|------|------|
+| [Agent Infrastructure](./agent-infrastructure/) | Apr 2026 | OpenClaw · CUA · browser-use · Mem0 · OpenViking · Hermes · GStack comparison + recommended stack |
+
 ## How to Use as Context
 At the start of any new session, point the AI here:
 > "Read ~/case-studies/CONTEXT.md before we start — it has full context on everything I've built."
