@@ -53,38 +53,51 @@ Claude (Cowork / CLI)                      ✅ Live — reasoning brain
   │
   └── delegates via CLI to:
         │
-        OpenClaw (orchestrator)             🔧 To Install
+        nanobot (command channel)           🔧 To Install — WhatsApp/Discord bridge, pip install
+          │
+        ClawTeam (agent swarm ops)          🔧 To Install — spins up teams, tmux, worktrees
+          ├── DeepCode                      🔧 To Install — coding executor (beats Claude Code on benchmarks)
           ├── Claw-Code + llama3.1:8b       🔧 To Install — bulk/cheap tasks, zero API cost
           ├── Claw-Code + qwen2.5-coder     🔧 To Install — code-specific tasks
           ├── Hermes Agent                  🔧 To Install — autonomous long-running tasks
           └── Agency-Agents templates       📋 Planned — specialist roles per task type
                     ↓
+              CLI-Anything / CLI-Hub        🔧 To Install — any software → agent CLI
+                    ↓
               OpenSpace (background)        🔧 To Install — observes executions, evolves skills
                     ↓
-              Mem0 → ChromaDB              🔧 To Install — cross-session persistent memory
+              RAG-Anything + Mem0 → ChromaDB  🔧 To Install — multimodal memory + retrieval
                     ↓
               browser-use / CUA            🔧 To Install — web + desktop automation
 ```
 
-### Layer Details
+### Layer Details (HKUDS Ecosystem — all compose together)
 
-**OpenClaw** — orchestration hub. Routes tasks to local models or Claw-Code agents. Also the messaging bridge: Claude can receive commands via WhatsApp (unofficial web.js/Baileys bridge, free, QR scan) or Discord (free API, no country restrictions — backup option since Telegram is banned). OpenClaw must be wired to invoke Claude CLI with CONTEXT.md so it "knows" who Ahmed is and what's been built.
+**nanobot** (37.8k stars, `pip install nanobot-ai`) — personal AI assistant / command channel. Replaces OpenClaw's messaging role. WhatsApp, Discord, WeChat, Slack, Matrix, 12+ platforms. Scheduled tasks, memory, MCP support. Ultra-lightweight. Ahmed commands the system from his phone; nanobot routes to Claude CLI (with CONTEXT.md injected) or to ClawTeam agents. Discord = primary channel (Telegram banned in country).
 
-**Claw-Code** (149k stars) — clean-room reimplementation of Claude Code harness. Runs on local models + Codex. Key for the efficiency goal: fire a Claw-Code agent with llama3.1:8b for mechanical tasks instead of burning Claude API tokens.
+**ClawTeam** (4.4k stars) — multi-agent swarm orchestration. Replaces OpenClaw's agent-spinning role. One command spins up a full team with isolated git worktrees, tmux windows, real-time inter-agent communication, dependency management. Pre-built templates for engineering, research, finance. Works with Claude Code, Claw-Code, Codex. Agents escalate blockers via Discord to Ahmed.
 
-**Hermes Agent** (22.6k stars) — self-improving autonomous executor. 40+ tools, parallel subagents, cron scheduling, learns from experience. Best for complex multi-step tasks that need to run unsupervised.
+**DeepCode** (15.1k stars) — dedicated coding executor. Paper2Code, Text2Web, Text2Backend. 75.9% PaperBench (beats top ML PhDs, outperforms Cursor + Claude Code by 26.1%). Primary agent for implementation tasks. Integrates with nanobot.
 
-**OpenSpace** (3.5k stars, updated daily) — skill evolution engine. Three modes: FIX (repairs broken skills), DERIVED (specialises), CAPTURED (extracts new patterns). 46% token reduction after first run of any task type. 4.2× income on GDPVal benchmark. Run as background service, wrap in CLI for calls.
+**Claw-Code** (149k stars) — clean-room Claude Code harness running on local models + Codex. Zero API cost for bulk/mechanical tasks. Key efficiency piece: use llama3.1:8b for tasks that don't need Claude reasoning.
 
-**Agency-Agents** (68.9k stars) — 68+ specialist agent templates. Not infrastructure — personality/workflow layer. Grab the right template (UI agent, debugger agent, researcher) and drop it into Claw-Code or Hermes runtime. Build registry over time: best agent per task type.
+**Hermes Agent** (22.6k stars) — self-improving autonomous executor. 40+ tools, parallel subagents, cron scheduling. Best for complex multi-step tasks that run unsupervised.
 
-**GSD 2 agent** — planning and task distribution. Decomposes high-level goals into discrete tasks, hands each to the right specialist agent.
+**Agency-Agents** (68.9k stars) — 68+ specialist agent templates (UI, debugger, researcher, etc.). Not infrastructure — personality/workflow layer. Drop templates into Claw-Code or Hermes. Build testing registry over time.
 
-**Mem0 → ChromaDB** — Mem0 sits on top of existing ChromaDB instance (`ahmed-context` collection). Handles "what's worth remembering" extraction. Any agent reads/writes through Mem0; ChromaDB persists it. Two collections: `ahmed-context` (project/session memory) + `claude-powers` (knowledge pipeline output).
+**GSD 2 agent** — planning and task distribution. Decomposes high-level goals into discrete tasks for ClawTeam.
 
-**browser-use** (85.7k stars) — best-in-class web automation. 89.1% WebVoyager benchmark. Python CLI.
+**CLI-Anything** (27.6k stars) — generates agent-controllable CLIs for any software. CLI-Hub registry has 50+ ready (Ollama, LibreOffice, GIMP, etc.). `pip install cli-<software>` or `/cli-anything ./app` to generate new ones. SKILL.md output feeds directly into OpenSpace.
 
-**CUA** — full desktop/GUI automation. Complements browser-use (browser-use = web, CUA = desktop apps).
+**OpenSpace** (3.5k stars, updated daily) — skill evolution engine across all agents. FIX / DERIVED / CAPTURED modes. 46% token reduction after first run. Observes all agent executions, evolves skills automatically. Wraps CLI-Anything outputs into evolving skills.
+
+**RAG-Anything** (15k stars, `pip install raganything`) — multimodal RAG: text, images, tables, charts, equations. Upgrades knowledge pipeline beyond text/transcripts. Knowledge graph + hybrid vector + graph retrieval. Replaces simple ChromaDB vector search with richer retrieval.
+
+**Mem0 → ChromaDB** — Mem0 on top of ChromaDB for "what's worth remembering" extraction. Cross-session memory for all agents. Two collections: `ahmed-context` + `claude-powers`.
+
+**browser-use** (85.7k stars) — best-in-class web automation (89.1% WebVoyager). Python CLI.
+
+**CUA** — full desktop/GUI automation. Complement to browser-use for apps that have no CLI.
 
 ### Agent Testing Registry
 Keep a log here of what each agent does best. Update as we test.
@@ -107,7 +120,7 @@ Keep a log here of what each agent does best. Update as we test.
 ### Research Done
 | Topic | File | Summary |
 |-------|------|---------|
-| Agent Infrastructure | [./agent-infrastructure/RESEARCH.md](./agent-infrastructure/RESEARCH.md) | Full comparison: OpenClaw, CUA, browser-use, Mem0, OpenViking, Hermes, GStack, OpenSpace, Claw-Code, Agency-Agents |
+| Agent Infrastructure | [./agent-infrastructure/RESEARCH.md](./agent-infrastructure/RESEARCH.md) | Full comparison: nanobot, ClawTeam, DeepCode, Claw-Code, Hermes, OpenSpace, CLI-Anything, RAG-Anything, browser-use, CUA, Mem0, Agency-Agents, GStack. Final stack = HKUDS ecosystem core. |
 
 ---
 
